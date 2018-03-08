@@ -16,7 +16,7 @@ $app->get('/test', function (Request $request, Response $response){
 $app->get('/{count}', function (Request $request, Response $response){
   $blogController = new BlogController();
   $count = $request->getAttribute("count");
-  return $response->write($blogController->get(BlogController::MULTIPLE, $count));
+  return $response->write($blogController->get(BlogController::ALL, $count));
 });
 
 $app->get('/id/{id}', function (Request $request, Response $response){

@@ -8,7 +8,7 @@ class User {
   public $password;
   public $avatar;
 
-  static function getUser($id){
+  static function get($id){
     $mysqli = new mysqli(HOSTNAME, USERNAME, PASSWORD, DB_NAME);
     $Q = "SELECT * FROM user WHERE `id` = $id";
     $rows = $mysqli->query($Q);

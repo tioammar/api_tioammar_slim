@@ -12,36 +12,14 @@ class Blog {
   public $author;
   public $readcount;
   public $tag;
-  public $mysqli;
 
-  static function getSingleBlog($id){
-    $mysqli = new mysqli(HOSTNAME, USERNAME, PASSWORD, DB_NAME);
-    $Q = "SELECT * FROM blog WHERE `id` = $id";
-    $rows = $mysqli->query($Q);
-    if($r = $rows->fetch_array()){
-      $blog = new Blog();
-      $blog->id = $r['id'];
-      $blog->tille = $r['title'];
-      $blog->datetime = $r['datetime'];
-      $blog->content = $r['content'];
-      $blog->picture = $r['picture'];
-      $blog->author = $r['author'];
-      $blog->readcount = $r['readcount'];
-      $blog->tag = $r['tag'];
-      return $blog;
-    } else return null;
-  }
-
-  static function getMultipleBlog($count){
-    $mysqli = new mysqli(HOSTNAME, USERNAME, PASSWORD, DB_NAME);
+  private static function fetch($rows){
     $blogs = array();
-    $Q = "SELECT * FROM blog LIMIT $count";
-    $rows = $mysqli->query($Q);
     $i = 0; // for array index;
     while($r = $rows->fetch_array()){
       $blog = new Blog();
       $blog->id = $r['id'];
-      $blog->tille = $r['title'];
+      $blog->title = $r['title'];
       $blog->datetime = $r['datetime'];
       $blog->content = $r['content'];
       $blog->picture = $r['picture'];
@@ -55,5 +33,18 @@ class Blog {
       return $blogs;
     } else return null;
   } 
+
+  static function get($id){
+    $mysqli = new mysqli(HOSTNAME, USERNAME, PASSWORD, DB_NAME);
+    $Q = "SELECT * FROM blog WHERE `id` = $id";
+    $blogs = self::fetch($mysqli->query($Q));
+    return $blogs[0];
+  }
+
+  static function getAll($count){
+    $mysqli = new mysqli(HOSTNAME, USERNAME, PASSWORD, DB_NAME);
+    $Q = "SELECT * FROM blog LIMIT $count";
+    return self::fetch($mysqli->query($Q));
+  }
 }
 ?>
